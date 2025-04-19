@@ -24,19 +24,10 @@ A web-based platform designed to manage student complaints and suggestions withi
 
 ### Install Dependencies
 
-npm i express
-npm i nodemon
-npm i ejs
-npm i express-session
-npm i express-validator
-npm i mysql2
-npm i sequelize
-npm i nodemailer
-npm i multer
-
 ```bash
 npm i express nodemon ejs express-session express-validator mysql2 sequelize nodemailer multer
 ```
+
 ### Start the App
 
 ```bash
@@ -44,9 +35,11 @@ npm start
 ```
 
 ### Run Supervisor seeder
+
 ```bash
 npm run seed
 ```
+
 ### Student startup Route
 
 /cms/requests/create
