@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>  <%= locals.title  %></title>
+    <style>
+      body {
+        background: linear-gradient(to right, #a0e4f1, #98bde7);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        direction: rtl;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        background: white;
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      input[type="number"],
+      #btn {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+
+      #btn {
+        background: linear-gradient(to right, #00c6ff, #0072ff);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        transition: background 0.3s;
+      }
+
+      #btn:hover {
+        background: linear-gradient(to right, #009fe3, #005ed9);
+      }
+
+      .result-box {
+        background: #f7f7f7;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+      }
+
+      .label {
+        font-weight: bold;
+        margin-top: 10px;
+      }
+
+      .value {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+<% if (locals.guard) { %>
+      <form action="/cms" method="get">
+        <button
+          type="submit"
+          style="
+            padding: 12px 25px;
+            background: linear-gradient(to right, #28a745, #218838);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+            transition: all 0.3s ease;
+          "
+        >
+          AdminLTE
+        </button>
+      </form>
+<% } %>
+      <% if (locals.errors) { %>
+        <div id="errorBox" style="
+            background-color: #ffe6e6;
+            border: 1px solid #ff5c5c;
+            color: #990000;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            direction: rtl;
+            position: relative;
+          ">
+          
+          <!-- زر الإغلاق في الزاوية -->
+          <button onclick="document.getElementById('errorBox').style.display='none'"
+            style="position: absolute; top: 10px; left: 15px; background: none; border: none; font-size: 20px; font-weight: bold; color: #990000; cursor: pointer;">
+            ×
+          </button>
+      
+          <!-- العنوان تحت الزر -->
+          <h5 style="margin: 0 0 10px 0; font-size: 18px; font-weight: bold;">
+            <i class="fas fa-exclamation-triangle"></i> تنبيه!
+          </h5>
+      
+          <!-- قائمة الأخطاء -->
+          <ul style="margin: 0; padding-right: 20px; list-style-position: inside;">
+              <li><%=  locals.errors[0].msg %></li>
+          </ul>
+        </div>
+      <% } %>
+      <h2>البحث عن طلبك</h2>
+
+      <form id="searchForm" action="/cms/request/search" method="POST">
+        <input
+          type="number"
+          id="requestId"
+          name="id"
+          placeholder="أدخل رقم الطالب "
+          
+        />
+        <button id="btn" type="submit">ابحث عن الطلب</button>
+      </form>
+
+      <!-- <div id="resultBox" class="result-box" style="display: none;">
+    <div><span class="label">عنوان الطلب:</span> <span class="value" id="title"></span></div>
+    <div><span class="label">نوع الطلب:</span> <span class="value" id="type"></span></div>
+    <div><span class="label">تفاصيل الرسالة:</span> <span class="value" id="details"></span></div>
+    <div><span class="label">الحالة:</span> <span class="value" id="status"></span></div>
+  </div> -->
+  <% if (locals.request) { %>
+      <div id="resultBox" class="result-box">
+        <!-- <p><strong>العنوان:</strong> اقتراح لإضافة قسم جديد في النظام</p>
+        <p><strong>النوع:</strong> اقتراح</p>
+        <p><strong>الحالة:</strong> <span class="closed">مغلق</span></p>
+        <p><strong>هل هو عاجل؟</strong> لا</p>
+        <p><strong>تاريخ الإغلاق:</strong> 2024-12-22</p>
+        <p class="image-status">📎 لا يوجد مرفقات</p> -->
+
+        <p><strong>رقم الطلب</strong> <%=locals.request.id %></p>
+        <p><strong>رقم الطالب</strong> <%=locals.request.student_id %></p>
+        <p><strong>العنوان:</strong> <%=locals.request.title %></p>
+        <p><strong>الرسالة:</strong> <%=locals.request.message %></p>
+        <% if (locals.request.response) { %>
+          <p><strong>الرد :</strong> <%=locals.request.response.content %></p>
+        <% } %>
+        <p><strong>النوع:</strong> <%=locals.request.type %></p>
+        <p>
+          <strong>الحالة:</strong>
+          <span class="open"> <%=locals.request.status %></span>
+        </p>
+        <p>
+          <strong>هل هو عاجل؟</strong>
+          <span class="urgent">
+            <% if (locals.request.urgent===true) { %> نعم <% }else{ %> لا <% } %>
+          </span>
+        </p>
+        <p>
+          <strong
+            >   <% if (locals.request.closed_date) { %> تاريخ الإغلاق:   <%= new
+              Date(locals.request.closed_date).toLocaleDateString('ar-EG') %>
+              الساعة:   <%= new
+              Date(locals.request.closed_date).toLocaleTimeString('ar-EG') %> <%
+              } else { %> غير مغلق حتى الآن <% } %></strong
+          >
+          
+        </p>
+
+        <% if (locals.request.image) { %>
+        <p class="image-status">
+          📷 مرفق صورة:
+          <img src="<%=locals.request.image%>"  alt="image" width="100" />
+        </p>
+        <% } else{%>
+
+        <p class="image-status">📎 لا يوجد مرفقات</p>
+        <% } %>
+        
+    
+        <form
+          enctype="application/x-www-form-urlencoded"
+          method="post"
+          action="/cms/responses"
+        >
+    </div>
+  <% } %>
+
+    <!-- <script>
+      function searchRequest(e) {
+        e.preventDefault();
+
+        const requestId = document.getElementById("requestId").value;
+
+        // مثال وهمي - يمكنك تغييره بربط حقيقي مع السيرفر
+        if (requestId === "12345") {
+          document.getElementById("title").textContent = "طلب تعديل بيانات";
+          document.getElementById("type").textContent = "اقتراح";
+          document.getElementById("details").textContent =
+            "أقترح تعديل بيانات الطالب في النظام.";
+          document.getElementById("status").textContent = "قيد المعالجة";
+
+          document.getElementById("resultBox").style.display = "block";
+        } else {
+          alert("لم يتم العثور على الطلب، تأكد من رقم الطلب.");
+          document.getElementById("resultBox").style.display = "none";
+        }
+      }
+    </script> -->
+  </body>
+</html>

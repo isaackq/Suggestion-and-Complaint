@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>تقديم طلب</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to right, #74ebd5, #acb6e5);
+        margin: 0;
+        padding: 0;
+        direction: rtl;
+      }
+
+      .container {
+        max-width: 700px;
+        margin: 50px auto;
+        background-color: white;
+        padding: 30px 40px;
+        border-radius: 15px;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 25px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      textarea,
+      select,
+      input[type="number"],
+      input[type="file"] {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-size: 15px;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      .checkbox-group {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+      }
+
+      .checkbox-group input {
+        margin-left: 10px;
+        transform: scale(1.2);
+      }
+
+      #btn {
+        background: linear-gradient(to right, #00c6ff, #0072ff);
+        color: white;
+        border: none;
+        padding: 14px 25px;
+        font-size: 16px;
+        border-radius: 8px;
+        width: 100%;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      #btn:hover {
+        background: linear-gradient(to right, #0072ff, #00c6ff);
+      }
+
+      .success-message {
+        margin-top: 20px;
+        text-align: center;
+        color: green;
+        font-weight: bold;
+      }
+    </style>
+    
+  </head>
+  <body>
+
+    <!-- <form action="/submit-request" method="POST" enctype="multipart/form-data" style="max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 10px;">
+  <h3>إرسال طلب جديد</h3>
+
+  <label for="requestType">نوع الطلب:</label>
+  <select name="requestType" id="requestType" required style="width: 100%; padding: 8px; margin-bottom: 10px;">
+    <option value="">-- اختر نوع الطلب --</option>
+    <option value="تعديل بيانات">تعديل بيانات</option>
+    <option value="إضافة مستند">إضافة مستند</option>
+    <option value="استفسار">استفسار</option>
+  </select>
+
+  <label for="requestNumber">الرقم الخاص بالطلب:</label>
+  <input type="text" id="requestNumber" name="requestNumber" required placeholder="مثال: 12345" style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+
+  <label for="attachment">إرفاق المستندات:</label>
+  <input type="file" id="attachment" name="attachment" required style="margin-bottom: 10px;" />
+
+  <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">
+    إرسال الطلب
+  </button>
+</form> -->
+
+
+
+    <div class="container">
+      <form action="/cms/request/search" method="get" enctype="application/x-www-form-urlencoded">
+      <button style="
+      width: 20%;
+      border: 0;
+      box-shadow: 0 0 15px rgb(131, 11, 11);
+  display: inline-block;
+  background-color: #28a745;
+  color: white;
+  padding: 12px 20px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+" onmouseover="this.style.backgroundColor='#218838'" onmouseout="this.style.backgroundColor='#28a745'">
+  ابحث عن طلبك 
+    </button></form>
+
+      <h2>تقديم شكوى أو اقتراح</h2>
+      <% if (locals.errors) { %>
+        <div id="errorBox" style="
+            background-color: #ffe6e6;
+            border: 1px solid #ff5c5c;
+            color: #990000;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            direction: rtl;
+            position: relative;
+          ">
+          
+          <!-- زر الإغلاق في الزاوية -->
+          <button onclick="document.getElementById('errorBox').style.display='none'"
+            style="position: absolute; top: 10px; left: 15px; background: none; border: none; font-size: 20px; font-weight: bold; color: #990000; cursor: pointer;">
+            ×
+          </button>
+      
+          <!-- العنوان تحت الزر -->
+          <h5 style="margin: 0 0 10px 0; font-size: 18px; font-weight: bold;">
+            <i class="fas fa-exclamation-triangle"></i> تنبيه!
+          </h5>
+      
+          <!-- قائمة الأخطاء -->
+          <ul style="margin: 0; padding-right: 20px; list-style-position: inside;">
+            <% for (error of locals.errors) { %>
+              <li><%= error.msg %></li>
+            <% } %>
+          </ul>
+        </div>
+      <% } %>
+  
+      <form
+        id="requestForm"
+        enctype="multipart/form-data"
+        method="POST"
+        action="/cms/requests"
+      >
+        <label for="title">عنوان الطلب</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          placeholder="اكتب عنوانًا واضحًا"
+          required
+          value="<%- locals.old?.title%>"
+        />
+        <label for="title">رقم الطالب الجامعي </label>
+        <input
+          type="number"
+          id="student_id"
+          name="student_id"
+          placeholder="ادخل رقم الطالب الجامعي"
+          required
+          value="<%- locals.old?.student_id%>"
+        />
+        <label for="title">اسم الطالب</label>
+        <input
+          type="text"
+          id="student_id"
+          name="name"
+          placeholder="اكتب اسم الطالب"
+          required
+          value="<%- locals.old?.name%>"
+        />
+
+        <label for="title">بريد الطالب الاكتروني</label>
+        <input
+          type="email"
+          id="student_id"
+          name="email"
+          placeholder="اكتب بريد الطالب الاكتروني"
+          required
+          value="<%- locals.old?.email%>"
+        />
+        
+        <label for="message">تفاصيل الرسالة</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          placeholder="اكتب محتوى الشكوى أو الاقتراح هنا"
+          
+          value="<%- locals.old?.message %>"
+        ></textarea>
+
+        <label for="type">نوع الطلب</label>
+        <select id="type" name="type" required>
+          <option  value="Complaint" <% if (locals.old?.type=="Complaint") { %>
+            selected
+          <% } %> >شكوى</option>
+          <option value="Suggestion" <% if (locals.old?.type=="Suggestion") { %>
+            selected
+          <% } %> >اقتراح</option>
+        </select>
+
+        <div class="checkbox-group">
+          <label for="urgent">طلب عاجل؟</label>
+          <input type="checkbox" id="urgent" name="urgent" <% if (locals.old?.urgent==="on") { %> checked <% } %> />
+        </div>
+
+        <label for="image">إرفاق صورة (اختياري)</label>
+        <input type="file" id="image" name="image" accept="image/*" />
+
+        <button id="btn"  type="submit">إرسال الطلب</button>
+
+        <% if(locals.success) { %>
+        <div id="successMessage" class="success-message">
+          ✅ تم إرسال الطلب بنجاح!
+        </div>
+        <% }%>
+      </form>
+    </div>
+
+<script src="/assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/assets/dist/js/adminlte.min.js"></script>
+
+   <!-- <script> 
+      const form = document.getElementById("requestForm");
+      const successMessage = document.getElementById("successMessage");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+
+        // Simulation
+        console.log("Form values:");
+        for (let [key, value] of formData.entries()) {
+          console.log(`${key}: ${value}`);
+        }
+
+        // Show success
+        successMessage.style.display = "block";
+
+        // Reset the form after 2 seconds
+        setTimeout(() => {
+          successMessage.style.display = "none";
+          form.reset();
+        }, 2000);
+      });
+    </script>   -->
+  </body>
+</html>

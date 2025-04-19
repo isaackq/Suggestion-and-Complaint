@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>عرض الطلبات</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to right, #74ebd5, #acb6e5);
+        margin: 0;
+        padding: 0;
+        direction: rtl;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 50px auto;
+        background-color: white;
+        padding: 30px 40px;
+        border-radius: 15px;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 25px;
+      }
+
+      .request {
+        background-color: #f0f8ff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: 1px solid #d0e6f7;
+      }
+
+      .request strong {
+        color: #0077b6;
+      }
+
+      .urgent {
+        color: red;
+        font-weight: bold;
+      }
+
+      .closed {
+        color: gray;
+      }
+
+      .open {
+        color: green;
+        font-weight: bold;
+      }
+
+      .image-status {
+        color: #555;
+        font-size: 14px;
+        margin-top: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <form action="/cms" method="get">
+        <button
+          type="submit"
+          style="
+            padding: 12px 25px;
+            background: linear-gradient(to right, #28a745, #218838);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+            transition: all 0.3s ease;
+          "
+        >
+          AdminLTE
+        </button>
+      </form>
+      <h2>قائمة الطلبات المرسلة</h2>
+
+      <!-- أضف المزيد هنا ديناميكياً لاحقًا -->
+      <!-- داخل كل div.request -->
+
+
+
+      <% data.sort((a, b) => new Date(b.request.closed_date) - new Date(a.request.closed_date)); %>
+      <% for (response of data) { %> 
+        <% if (response.request.closed_date) { %>
+      <div class="request">
+        <p><strong>العنوان:</strong> <%=response.request.title %></p>
+        <p><strong>الرسالة:</strong> <%=response.request.message %></p>
+
+        <p><strong>النوع:</strong> <%=response.request.type %></p>
+        <p>
+          <strong>الحالة:</strong>
+          <span class="open"> <%=response.request.status %></span>
+        </p>
+        <p>
+          <strong>هل هو عاجل؟</strong>
+          <span class="urgent">
+            <% if (response.request.urgent===true) { %> نعم <% }else{ %> لا <% }
+            %>
+          </span>
+        </p>
+        <p>
+          <strong>
+            <% if (response.request.closed_date) { %> تاريخ الإغلاق: <%= new
+            Date(response.request.closed_date).toLocaleDateString('ar-EG') %>
+            الساعة: <%= new
+            Date(response.request.closed_date).toLocaleTimeString('ar-EG') %> <%
+            } else { %> غير مغلق حتى الآن <% } %>
+          </strong>
+        </p>
+
+        <% if (response.request.image) { %>
+        <p class="image-status">
+          📷 مرفق صورة:
+          <img src="<%=response.request.image%>"  alt="image" width="100" />
+        </p>
+        <% } else{%>
+
+        <p class="image-status">📎 لا يوجد مرفقات</p>
+        <% } %>
+
+        <label for="email1"
+          >تم الرد بوساطة المشرف: <%= response.supervisor.name %></label
+        >
+      </div>
+      <% } %> <% } %>
+    </div>
+  </body>
+</html>

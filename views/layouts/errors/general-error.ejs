@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error <%= status %></title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f6fa;
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .container {
+        text-align: center;
+        max-width: 600px;
+        padding: 40px;
+        border-radius: 15px;
+        background-color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .status {
+        font-size: 100px;
+        font-weight: bold;
+        color: #e74c3c;
+        margin-bottom: 10px;
+      }
+
+      .message {
+        font-size: 22px;
+        margin-bottom: 30px;
+      }
+
+      .home-link {
+        text-decoration: none;
+        background-color: #3498db;
+        color: #fff;
+        padding: 12px 25px;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: 0.3s;
+      }
+
+      .home-link:hover {
+        background-color: #2980b9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="status"><%= status %></div>
+      <div class="message"><%= error %></div>
+      <a href="/" class="home-link">← Back to Home</a>
+    </div>
+  </body>
+</html>

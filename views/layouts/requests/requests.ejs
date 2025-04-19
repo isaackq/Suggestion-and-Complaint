@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>عرض الطلبات</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to right, #74ebd5, #acb6e5);
+        margin: 0;
+        padding: 0;
+        direction: rtl;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 50px auto;
+        background-color: white;
+        padding: 30px 40px;
+        border-radius: 15px;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 25px;
+      }
+
+      .request {
+        background-color: #f0f8ff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        border: 1px solid #d0e6f7;
+      }
+
+      .request strong {
+        color: #0077b6;
+      }
+
+      .urgent {
+        color: red;
+        font-weight: bold;
+      }
+
+      .closed {
+        color: gray;
+      }
+
+      .open {
+        color: green;
+        font-weight: bold;
+      }
+
+      .image-status {
+        color: #555;
+        font-size: 14px;
+        margin-top: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <form action="/cms" method="get">
+        <button
+          type="submit"
+          style="
+            padding: 12px 25px;
+            background: linear-gradient(to right, #28a745, #218838);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+            transition: all 0.3s ease;
+          "
+        >
+          AdminLTE
+        </button>
+      </form>
+
+      <h2>قائمة الطلبات المرسلة</h2>
+
+      <!-- أضف المزيد هنا ديناميكياً لاحقًا -->
+      <!-- داخل كل div.request -->
+      <% if (locals.data) { %> <% const openedRequests = data.filter(r =>
+      r.status === "Open"); const closedRequests = data.filter(r => r.status !==
+      "Open"); const sortedRequests = [...openedRequests, ...closedRequests]; %>
+      <% const closedRequestsSortedByDate = closedRequests.sort((a, b) => {
+      const dateA = new Date(a.closed_date || 0); const dateB = new
+      Date(b.closed_date || 0); return dateB - dateA; }); const
+      finalSortedRequests = [...openedRequests, ...closedRequestsSortedByDate];
+      for(const request of finalSortedRequests) { %>
+
+      <div class="request">
+        <% if (locals.errors) { %>
+        <div
+          id="errorBox"
+          style="
+            background-color: #ffe6e6;
+            border: 1px solid #ff5c5c;
+            color: #990000;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            direction: rtl;
+            position: relative;
+          "
+        >
+          <!-- زر الإغلاق في الزاوية -->
+          <button
+            onclick="document.getElementById('errorBox').style.display='none'"
+            style="
+              position: absolute;
+              top: 10px;
+              left: 15px;
+              background: none;
+              border: none;
+              font-size: 20px;
+              font-weight: bold;
+              color: #990000;
+              cursor: pointer;
+            "
+          >
+            ×
+          </button>
+
+          <!-- العنوان تحت الزر -->
+          <h5 style="margin: 0 0 10px 0; font-size: 18px; font-weight: bold">
+            <i class="fas fa-exclamation-triangle"></i> تنبيه!
+          </h5>
+
+          <!-- قائمة الأخطاء -->
+          <ul
+            style="margin: 0; padding-right: 20px; list-style-position: inside"
+          >
+            <% for (error of locals.errors) { %>
+            <li><%= error.msg %></li>
+            <% } %>
+          </ul>
+        </div>
+        <% } %>
+
+        <p><strong>رقم الطلب</strong> <%=request.id %></p>
+        <p><strong>رقم الطالب</strong> <%=request.student_id %></p>
+        <p><strong>العنوان:</strong> <%=request.title %></p>
+        <p><strong>الرسالة:</strong> <%=request.message %></p>
+        <p><strong>النوع:</strong> <%=request.type %></p>
+        <p>
+          <strong>الحالة:</strong>
+          <span class="open"> <%=request.status %></span>
+        </p>
+        <p>
+          <strong>هل هو عاجل؟</strong>
+          <span class="urgent">
+            <% if (request.urgent===true) { %> نعم <% }else{ %> لا <% } %>
+          </span>
+        </p>
+        <p>
+          <strong>
+            <% if (request.closed_date) { %> تاريخ الإغلاق: <%= new
+            Date(request.closed_date).toLocaleDateString('ar-EG') %> الساعة: <%=
+            new Date(request.closed_date).toLocaleTimeString('ar-EG') %> <% }
+            else { %> غير مغلق حتى الآن <% } %>
+          </strong>
+        </p>
+        <% if (request.image) { %>
+        <p class="image-status">
+          📷 مرفق صورة:
+          <img src="<%=request.image%>" alt="image" width="100" />
+        </p>
+        <% } else{%>
+
+        <p class="image-status">📎 لا يوجد مرفقات</p>
+        <% } %>
+        <form
+          enctype="application/x-www-form-urlencoded"
+          method="post"
+          action="/cms/responses"
+        >
+          <!-- 📧 إرسال رد بالبريد -->
+
+          <% if (!request.closed_date) { %>
+          <label for="email1">ارفق الرد :</label>
+          <input
+            type="text"
+            id="content"
+            name="content"
+            placeholder=""
+            value="<%= locals.old?.content %>"
+            style="
+              width: 100%;
+              padding: 10px;
+              border-radius: 8px;
+              border: 1px solid #ccc;
+              margin-bottom: 10px;
+            "
+          />
+          <input type="hidden" value="<%=request.id%>" name="request_id" />
+          <button
+            style="
+              background: #28a745;
+              color: white;
+              padding: 10px 20px;
+              border: none;
+              border-radius: 6px;
+              cursor: pointer;
+            "
+          >
+            📤 إرسال رد عبر البريد
+          </button>
+          <% } %> <% if(locals.req_id==request.id) { %>
+          <div id="successMessage" class="success-message">
+            ✅تم ارسال الرد عبر البريد الاكتروني بنجاح
+          </div>
+          <% }%>
+        </form>
+      </div>
+      <% } %>
+        <% } %>
+      
+      <% if (locals.error) { %>
+      <div
+        id="errorBox"
+        style="
+          background-color: #ffe6e6;
+          border: 1px solid #ff5c5c;
+          color: #990000;
+          padding: 20px;
+          border-radius: 10px;
+          margin-bottom: 20px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+          direction: rtl;
+          position: relative;
+        "
+      >
+        <!-- زر الإغلاق في الزاوية -->
+        <button
+          onclick="document.getElementById('errorBox').style.display='none'"
+          style="
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            font-weight: bold;
+            color: #990000;
+            cursor: pointer;
+          "
+        >
+          ×
+        </button>
+
+        <!-- العنوان تحت الزر -->
+        <h5 style="margin: 0 0 10px 0; font-size: 18px; font-weight: bold">
+          <i class="fas fa-exclamation-triangle"></i> تنبيه!
+        </h5>
+
+        <!-- قائمة الأخطاء -->
+        <ul style="margin: 0; padding-right: 20px; list-style-position: inside">
+          <li><%= locals.error %></li>
+        </ul>
+      </div>
+      <% } %>
+    </div>
+  </body>
+</html>
