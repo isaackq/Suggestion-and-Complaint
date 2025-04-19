@@ -10,6 +10,8 @@ A web-based platform designed to manage student complaints and suggestions withi
 - Receive an email notification upon supervisor response
 - View the current status of their request
 
+---
+
 ### Supervisor Side:
 
 - Login/logout securely
@@ -22,11 +24,15 @@ A web-based platform designed to manage student complaints and suggestions withi
 - Create new supervisor accounts
 - Update the info for aother supervisores
 
+---
+
 ### Install Dependencies
 
 ```bash
 npm i express nodemon ejs express-session express-validator mysql2 sequelize nodemailer multer
 ```
+
+---
 
 ### Start the App
 
@@ -34,11 +40,15 @@ npm i express nodemon ejs express-session express-validator mysql2 sequelize nod
 npm start
 ```
 
+---
+
 ### Run Supervisor seeder
 
 ```bash
 npm run seed
 ```
+
+---
 
 ### 🌐 Startup Routes
 
