@@ -63,3 +63,9 @@ npm run seed
 git clone https://github.com/isaackq/Suggestion-and-Complaint.git
 cd Suggestion-and-Complaint
 ```
+
+---
+
+### 🎨 Additional Setup (AdminLTE CSS/JS)
+
+Make sure to copy the AdminLTE assets into the `public/` directory if not already included.
