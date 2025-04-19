@@ -42,8 +42,8 @@ npm run seed
 
 ### Student startup Route
 
-/cms/requests/create
-
+- **Student Route**: `/cms/requests/create`
+- **Supervisor Route**: `/cms/login`
 ### Supervisor startup Route
 
 /cms/login
