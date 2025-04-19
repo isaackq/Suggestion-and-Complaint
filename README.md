@@ -2,7 +2,7 @@
 
 A web-based platform designed to manage student complaints and suggestions within an academic institution
 
-### Student Side:
+### 👩‍🎓 Student Side
 
 - Submit suggestions or complaints with full details
 - Attach an optional image or file
@@ -12,7 +12,7 @@ A web-based platform designed to manage student complaints and suggestions withi
 
 ---
 
-### Supervisor Side:
+### 👨‍🏫 Supervisor Side
 
 - Login/logout securely
 - View list of all requests (open/closed)
@@ -26,7 +26,7 @@ A web-based platform designed to manage student complaints and suggestions withi
 
 ---
 
-### Install Dependencies
+### ⚙️ Install Dependencies
 
 ```bash
 npm i express nodemon ejs express-session express-validator mysql2 sequelize nodemailer multer
@@ -34,7 +34,7 @@ npm i express nodemon ejs express-session express-validator mysql2 sequelize nod
 
 ---
 
-### Start the App
+### 🚀 Start the App
 
 ```bash
 npm start
@@ -42,7 +42,7 @@ npm start
 
 ---
 
-### Run Supervisor seeder
+### 🌱 Run Supervisor Seeder
 
 ```bash
 npm run seed
@@ -57,7 +57,7 @@ npm run seed
 
 ---
 
-### 1. Clone the Repository
+### 🔁 Clone the Repository
 
 ```bash
 git clone https://github.com/isaackq/Suggestion-and-Complaint.git
