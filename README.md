@@ -40,13 +40,12 @@ npm start
 npm run seed
 ```
 
-### Student startup Route
+### 🌐 Startup Routes
 
 - **Student Route**: `/cms/requests/create`
 - **Supervisor Route**: `/cms/login`
-### Supervisor startup Route
 
-/cms/login
+---
 
 ### 1. Clone the Repository
 
