@@ -29,7 +29,7 @@ A web-based platform designed to manage student complaints and suggestions withi
 ### ⚙️ Install Dependencies
 
 ```bash
-npm i express nodemon ejs express-session express-validator mysql2 sequelize nodemailer multer
+npm install
 ```
 
 ---

@@ -11,6 +11,7 @@ const { methodOverride } = require("./middlewares/methodOverride");
 const session = require("express-session");
 const Student = require("./models/Student");
 const multer = require("multer");
+const { errorHandler } = require("./middlewares/errorHandler");
 
 AppProvider.instance.app = app; //after singleton
 AppProvider.instance.syncDatabase();
@@ -63,31 +64,7 @@ app.use("/cms", webRouter);
 app.use("/errors", errorRouter);
 
 //General handller
-app.use((error, req, res, next) => {
-  if (error.status === 505) {
-    return res.status(error.status || 505).render("layouts/errors/505-error", {
-      error: error.message || "Internal Server Error",
-    });
-  } else if (error.status === 500) {
-    return res.status(error.status || 500).render("layouts/errors/500-error", {
-      error: error.message || "Internal Server Error",
-    });
-  } else if (error.status === 403) {
-    return res.status(error.status || 403).render("layouts/errors/403-error", {
-      error: error.message || "Forbidden",
-    });
-  } else {
-    console.log(error);
-
-    return res
-      .status(error.status || 507)
-      .render("layouts/errors/general-error", {
-        error: "Sorry, something went wrong. Please try again later.",
-        status: error.status || 507,
-      });
-  }
-  // next(error);
-});
+app.use(errorHandler);
 
 app.use((req, res, next) => {
   res.status(404).render("layouts/errors/404-error", {

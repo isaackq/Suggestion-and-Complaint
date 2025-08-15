@@ -63,7 +63,7 @@ module.exports = class Migration {
       onDelete: "RESTRICT",
       as: "request",
     });
-    
+
     // والـ Request عنده Response واحد
     Request.hasOne(Respose, {
       foreignKey: "request_id",
