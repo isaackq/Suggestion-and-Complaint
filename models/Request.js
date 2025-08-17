@@ -5,12 +5,12 @@ const Request = sequelize.define(
   "request",
   {
     id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.BIGINT.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },
     student_id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.BIGINT({ unsigned: true }),
       allowNull: false,
     },
     title: {

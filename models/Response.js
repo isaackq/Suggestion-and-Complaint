@@ -5,11 +5,11 @@ const Response = sequalize.define(
   "response",
   {
     id: {
-      type: DataTypes.BIGINT({ zerofill: false, unsigned: true }),
+      type: DataTypes.BIGINT.UNSIGNED,
       primaryKey: true,
       autoIncrement: true,
     },
-    Supervisor_id: {
+    supervisor_id: {
       type: DataTypes.BIGINT({ zerofill: false, unsigned: true }),
       allowNull: false,
     },

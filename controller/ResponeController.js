@@ -12,15 +12,14 @@ exports.store = async (req, res, next) => {
     const validator = validationResult(req);
     if (validator.isEmpty()) {
       const request = await Request.findOne({
-        where: { id: req.body.request_id }/*,
+        where: { id: req.body.request_id } /*,
         include: {
           model: Student,
           as: "student",
           attributes: ["email"],
-        },*/
+        },*/,
       });
       const student = await Student.findByPk(request.student_id);
-      console.log(student);
       if (student) {
         await Mailer.instance
           .to(`${student.email}`) //student email
@@ -36,7 +35,7 @@ exports.store = async (req, res, next) => {
 
       await Response.create({
         ...req.body,
-        Supervisor_id: req.session.user.id,
+        supervisor_id: req.session.user.id,
       });
       await request.update({ status: "closed", closed_date: Date.now() }); //status closed_date
 

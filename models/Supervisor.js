@@ -5,7 +5,7 @@ const Supervisors = sequalize.define(
   "supervisor",
   {
     id: {
-      type: DataTypes.BIGINT({ zerpFill: true, unsigned: true }),
+      type: DataTypes.BIGINT.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },

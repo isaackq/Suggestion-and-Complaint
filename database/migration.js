@@ -15,8 +15,9 @@ module.exports = class Migration {
       .then(() => {
         console.log("Synced Successfully");
       })
-      .catch(() => {
-        console.log("Error Occured"); //خطأ في بنية الجداول في السينتكس
+      .catch((err) => {
+        console.error("Sync failed:", err?.parent?.sqlMessage || err);
+        console.error("SQL:", err?.sql); //خطأ في بنية الجداول في السينتكس
       });
   }
 

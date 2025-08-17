@@ -6,7 +6,7 @@ const Student = sequelize.define(
   "student",
   {
     id: {
-      type: DataTypes.BIGINT({ zeroFill: false, unsigned: true }),
+      type: DataTypes.BIGINT.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },

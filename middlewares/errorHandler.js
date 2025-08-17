@@ -1,4 +1,4 @@
-exports.errorHandler = (err, req, res, next) => {
+exports.errorHandler = (error, req, res, next) => {
   if (error.status === 505) {
     return res.status(error.status || 505).render("layouts/errors/505-error", {
       error: error.message || "Internal Server Error",

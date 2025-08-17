@@ -72,10 +72,6 @@ app.use((req, res, next) => {
   });
 });
 
-// app.use((req, res, next) => {
-//   res.status(404).render("layouts/errors/404-error", { error: "Page not found" });
-// });
-
 app.listen(3000, () => {
   console.log("server is running on port 3000");
   console.log("server is running on port 3000");
